@@ -7,35 +7,29 @@ public class FireAK : MonoBehaviour
 {
     public GameObject bullet;
     public Transform spawnPoint;
-    public float fireSpeed = 20;
-    public float fireRate = 1f; // Fire rate in seconds
+    public float fireSpeed = 40;
 
-    private float nextFireTime = 3; // When the next bullet can be fired
-
-    // Start is called before the first frame update
     void Start()
     {
         XRGrabInteractable grabbable = GetComponent<XRGrabInteractable>();
-        grabbable.activated.AddListener(FireBullet);
+        grabbable.activated.AddListener(StartFireAkBullets);
     }
 
-    // Update is called once per frame
-    void Update()
+    void StartFireAkBullets(ActivateEventArgs arg)
     {
-        XRGrabInteractable grabbable = GetComponent<XRGrabInteractable>();
-        grabbable.activated.AddListener(FireBullet);
+        StartCoroutine(FireAkBullets());
     }
 
-    public void FireBullet(ActivateEventArgs arg) 
+    public IEnumerator FireAkBullets() 
     { 
-        if (Time.time > nextFireTime) // Check if enough time has passed since the last bullet was fired
-        {
+        for (int i = 0; i < 8; i++) {
             GameObject spawnedBullet = Instantiate(bullet);
             spawnedBullet.transform.position = spawnPoint.position;
             spawnedBullet.GetComponent<Rigidbody>().velocity = spawnPoint.forward * fireSpeed;
             Destroy(spawnedBullet, 5);
 
-            nextFireTime = Time.time + fireRate; // Set the next fire time
+            yield return new WaitForSeconds(0.1f); // Wait for 0.1 seconds before spawning the next bullet
         }
     }
+
 }
