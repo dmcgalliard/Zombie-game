@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Right hand
   - Left Hand
+  - WayPoints
   layers:
   - Default
   - TransparentFX
