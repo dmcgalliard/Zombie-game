@@ -8,6 +8,7 @@ public class FireShotgun : MonoBehaviour
     public GameObject bullet;
     public Transform spawnPoint;
     public float fireSpeed = 40;
+    public int damageAmount = 10;
 
     // Start is called before the first frame update
     void Start()
@@ -23,6 +24,17 @@ public class FireShotgun : MonoBehaviour
     }
 
     public void FireShotgunBullets(ActivateEventArgs arg) { 
+
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit)) {
+            Enemy e = hit.transform.GetComponent<Enemy>();
+            if (e != null)
+            {
+                e.TakeDamage(damageAmount);
+                
+            }
+        }
+
         for (int i = 0; i < 9; i++) {
             GameObject spawnedBullet = Instantiate(bullet);
             spawnedBullet.transform.position = spawnPoint.position;

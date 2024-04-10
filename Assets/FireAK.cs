@@ -8,6 +8,7 @@ public class FireAK : MonoBehaviour
     public GameObject bullet;
     public Transform spawnPoint;
     public float fireSpeed = 40;
+    public int damageAmount = 10;
 
     void Start()
     {
@@ -26,6 +27,16 @@ public class FireAK : MonoBehaviour
             GameObject spawnedBullet = Instantiate(bullet);
             spawnedBullet.transform.position = spawnPoint.position;
             spawnedBullet.GetComponent<Rigidbody>().velocity = spawnPoint.forward * fireSpeed;
+
+            RaycastHit hit;
+            if (Physics.Raycast(spawnedBullet.transform.position, spawnedBullet.transform.forward, out hit)) {
+                Enemy e = hit.transform.GetComponent<Enemy>();
+                if (e != null)
+                {
+                    e.TakeDamage(damageAmount);    
+                }
+            }
+
             Destroy(spawnedBullet, 5);
 
             yield return new WaitForSeconds(0.1f); // Wait for 0.1 seconds before spawning the next bullet
