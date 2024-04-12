@@ -25,20 +25,8 @@ public class FireShotgun : MonoBehaviour
 
     public void FireShotgunBullets(ActivateEventArgs arg) { 
 
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit)) {
-            Enemy e = hit.transform.GetComponent<Enemy>();
-            if (e != null)
-            {
-                e.TakeDamage(damageAmount);
-                
-            }
-        }
-
+       
         for (int i = 0; i < 9; i++) {
-            GameObject spawnedBullet = Instantiate(bullet);
-            spawnedBullet.transform.position = spawnPoint.position;
-
             // Add a small random offset to the direction for each bullet
             Vector3 direction = spawnPoint.forward;
             direction.x += Random.Range(-0.05f, 0.05f);
@@ -46,6 +34,17 @@ public class FireShotgun : MonoBehaviour
             direction.z += Random.Range(-0.05f, 0.05f);
             direction.Normalize();
 
+            RaycastHit hit;
+            if (Physics.Raycast(transform.position, direction, out hit)) {
+                Enemy e = hit.transform.GetComponent<Enemy>();
+                if (e != null)
+                {
+                    e.TakeDamage(damageAmount);
+                }
+            }
+
+            GameObject spawnedBullet = Instantiate(bullet);
+            spawnedBullet.transform.position = spawnPoint.position;
             spawnedBullet.GetComponent<Rigidbody>().velocity = direction * fireSpeed;
             Destroy(spawnedBullet, 5);
         }

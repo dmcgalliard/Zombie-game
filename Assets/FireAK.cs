@@ -24,21 +24,21 @@ public class FireAK : MonoBehaviour
     public IEnumerator FireAkBullets() 
     { 
         for (int i = 0; i < 8; i++) {
-            GameObject spawnedBullet = Instantiate(bullet);
-            spawnedBullet.transform.position = spawnPoint.position;
-            spawnedBullet.GetComponent<Rigidbody>().velocity = spawnPoint.forward * fireSpeed;
-
+            Vector3 direction = spawnPoint.forward;
+    
             RaycastHit hit;
-            if (Physics.Raycast(spawnedBullet.transform.position, spawnedBullet.transform.forward, out hit)) {
+            if (Physics.Raycast(spawnPoint.position, direction, out hit)) {
                 Enemy e = hit.transform.GetComponent<Enemy>();
                 if (e != null)
                 {
                     e.TakeDamage(damageAmount);    
                 }
             }
-
+            GameObject spawnedBullet = Instantiate(bullet);
+            spawnedBullet.transform.position = spawnPoint.position;
+            spawnedBullet.GetComponent<Rigidbody>().velocity = direction * fireSpeed;
             Destroy(spawnedBullet, 5);
-
+    
             yield return new WaitForSeconds(0.1f); // Wait for 0.1 seconds before spawning the next bullet
         }
     }
