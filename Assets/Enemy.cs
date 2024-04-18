@@ -14,7 +14,6 @@ public class Enemy : MonoBehaviour
         if (enemyHP <= 0)
         {
             animator.SetTrigger("death");
-            GetComponent<CapsuleCollider>().enabled = false;
             Destroy(gameObject, 10);
         }
         else
