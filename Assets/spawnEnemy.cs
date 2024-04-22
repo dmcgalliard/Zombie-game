@@ -8,7 +8,7 @@ public class spawnEnemy : MonoBehaviour
     public Transform spawnLocation;
     private float initialSpawnDelay = 5f;
     private int initialEnemyCount = 10;
-    private float phaseDuration = 45f; // 3 minutes
+    private float phaseDuration = 180f; // 3 minutes
     private float spawnDelayDecreaseFactor = 0.5f;
     private float spawnRadius = 10f;
 
@@ -35,6 +35,15 @@ public class spawnEnemy : MonoBehaviour
                 if (enemyPrefab != null)
                 {
                     Instantiate(enemyPrefab, spawnPosition, spawnLocation.rotation);
+                    BoxCollider boxCollider = enemyPrefab.GetComponent<BoxCollider>();
+                    if(boxCollider != null)
+                    {
+                        boxCollider.enabled = true;
+                    }
+                    else 
+                    {
+                        Debug.LogError("BoxCollider is null");
+                    }
                 }
                 else
                 {
@@ -49,7 +58,7 @@ public class spawnEnemy : MonoBehaviour
     
             yield return new WaitForSeconds(phaseDuration);
             currentSpawnDelay -= spawnDelayDecreaseFactor;
-            enemyCount = Mathf.RoundToInt(enemyCount * 1.5f); // Increase enemy count by 50%
+            enemyCount = Mathf.RoundToInt(enemyCount + 1); // Increase enemy count by 50%
         }
     
         Destroy(gameObject); // Delete the object after the final phase
