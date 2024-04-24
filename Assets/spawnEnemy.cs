@@ -8,7 +8,7 @@ public class spawnEnemy : MonoBehaviour
     public Transform spawnLocation;
     private float initialSpawnDelay = 5f;
     private int initialEnemyCount = 10;
-    private float phaseDuration = 180f; // 3 minutes
+    private float phaseDuration = 120f; // 3 minutes
     private float spawnDelayDecreaseFactor = 0.5f;
     private float spawnRadius = 10f;
 
