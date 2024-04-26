@@ -12,8 +12,6 @@ public class PlayerHealth : MonoBehaviour
     {
         health = maxHealth;
 
-        Vector3 headsetPosition = InputTracking.GetLocalPosition(XRNode.Head);
-        transform.position = new Vector3(headsetPosition.x, headsetPosition.y, headsetPosition.z);
     }
 
     public void TakeDamage(int damage)

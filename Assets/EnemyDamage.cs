@@ -20,10 +20,10 @@ public class EnemyDamage : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("Collision Detected with " + collision.gameObject.name);
+        //Debug.Log("Collision Detected with " + collision.gameObject.name);
         if (collision.gameObject.CompareTag("Player"))
         {
-            Debug.Log("Player collided. Attempting to apply damage.");
+          //  Debug.Log("Player collided. Attempting to apply damage.");
             playerHealth.TakeDamage(damage);
         }
     }

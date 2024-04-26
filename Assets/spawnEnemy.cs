@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class spawnEnemy : MonoBehaviour
 {
     public GameObject enemyPrefab;
@@ -20,13 +21,17 @@ public class spawnEnemy : MonoBehaviour
 
     IEnumerator SpawnEnemies()
     {
+   
+
         int enemyCount = initialEnemyCount;
         float currentSpawnDelay = initialSpawnDelay;
     
         for (int phase = 0; phase < 6; phase++)
         {
+            Debug.Log("Phase " + phase + " started");
             for (int i = 0; i < enemyCount; i++)
             {
+                Debug.Log("Spawning enemy " + i + " in phase " + phase);
                 Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
                 Vector3 randomPosition = randomDirection * Random.Range(0, spawnRadius);
                 Vector3 spawnPosition = spawnLocation.position + randomPosition;
@@ -42,25 +47,28 @@ public class spawnEnemy : MonoBehaviour
                     }
                     else 
                     {
-                        Debug.LogError("BoxCollider is null");
+                       // Debug.LogError("BoxCollider is null");
                     }
                 }
                 else
                 {
                     // Handle the case where the enemyPrefab is null
                     // You can log an error, instantiate a new enemy, etc.
-                    Debug.LogError("Enemy prefab is null");
+                  //  Debug.LogError("Enemy prefab is null");
                 }
-    
+                Debug.Log("Waiting for " + currentSpawnDelay + " seconds before spawning the next enemy");
                 yield return new WaitForSeconds(currentSpawnDelay);
                 
             }
-    
+            Debug.Log("Phase " + phase + " ended");
+            Debug.Log("Waiting for " + phaseDuration + " seconds before starting the next phase");
             yield return new WaitForSeconds(phaseDuration);
             currentSpawnDelay -= spawnDelayDecreaseFactor;
             enemyCount = Mathf.RoundToInt(enemyCount + 1); // Increase enemy count by 50%
         }
     
         Destroy(gameObject); // Delete the object after the final phase
+        
+ 
     }
 }
