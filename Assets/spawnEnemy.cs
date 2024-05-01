@@ -9,9 +9,10 @@ public class spawnEnemy : MonoBehaviour
     public Transform spawnLocation;
     private float initialSpawnDelay = 5f;
     private int initialEnemyCount = 10;
-    private float phaseDuration = 120f; // 3 minutes
+    private float waveDuration = 120f; 
     private float spawnDelayDecreaseFactor = 0.5f;
     private float spawnRadius = 10f;
+    public int waveCount = 6;
 
     // Start is called before the first frame update
     void Start()
@@ -19,7 +20,39 @@ public class spawnEnemy : MonoBehaviour
         StartCoroutine(SpawnEnemies());
     }
 
-    IEnumerator SpawnEnemies()
+    IEnumerator SpawnEnemies() 
+    { 
+        int enemyCount = initialEnemyCount;
+        float currentSpawnDelay = initialSpawnDelay;
+        int currentWave = 1;
+
+        while(currentWave != waveCount + 1) 
+        {
+            for(int i = 0; i < enemyCount; i++)
+            {
+                Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
+                Vector3 randomPosition = randomDirection * Random.Range(0, spawnRadius);
+                Vector3 spawnPosition = spawnLocation.position + randomPosition;
+
+                Instantiate(enemyPrefab, spawnPosition, spawnLocation.rotation);
+                CapsuleCollider capsuleCollider = enemyPrefab.GetComponent<CapsuleCollider>();
+                capsuleCollider.enabled = true;
+
+                yield return new WaitForSeconds(currentSpawnDelay);
+            }
+
+            enemyCount = Mathf.RoundToInt(enemyCount * 0.5f);
+            currentSpawnDelay -= spawnDelayDecreaseFactor;
+            waveCount++;
+            yield return new WaitForSeconds(waveDuration);
+
+        }
+        
+
+        
+    }
+
+  /*  IEnumerator SpawnEnemies()
     {
    
 
@@ -71,4 +104,5 @@ public class spawnEnemy : MonoBehaviour
         
  
     }
+    */
 }
