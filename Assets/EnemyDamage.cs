@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyDamage : MonoBehaviour
 {
     public PlayerHealth playerHealth;
+    public Enemy enemy;
     public int damage = 10;
     // Start is called before the first frame update
     void Start()
@@ -21,7 +22,7 @@ public class EnemyDamage : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         //Debug.Log("Collision Detected with " + collision.gameObject.name);
-        if (collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player") && enemy.enemyHP > 0)
         {
           //  Debug.Log("Player collided. Attempting to apply damage.");
             playerHealth.TakeDamage(damage);

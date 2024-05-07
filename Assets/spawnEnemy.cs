@@ -14,11 +14,12 @@ public class spawnEnemy : MonoBehaviour
     private float spawnRadius = 10f;
     public int waveCount = 6;
 
-    // Start is called before the first frame update
+    // Start is called before the first frame update.
     void Start()
     {
         StartCoroutine(SpawnEnemies());
     }
+    
 
     IEnumerator SpawnEnemies() 
     { 
@@ -30,23 +31,32 @@ public class spawnEnemy : MonoBehaviour
         {
             for(int i = 0; i < enemyCount; i++)
             {
-                Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
-                Vector3 randomPosition = randomDirection * Random.Range(0, spawnRadius);
-                Vector3 spawnPosition = spawnLocation.position + randomPosition;
+                if(enemyPrefab != null) 
+                {
+                    Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f)).normalized;
+                    Vector3 randomPosition = randomDirection * Random.Range(0, spawnRadius);
+                    Vector3 spawnPosition = spawnLocation.position + randomPosition;
 
-                Instantiate(enemyPrefab, spawnPosition, spawnLocation.rotation);
-                CapsuleCollider capsuleCollider = enemyPrefab.GetComponent<CapsuleCollider>();
-                capsuleCollider.enabled = true;
+                    GameObject enemy = Instantiate(enemyPrefab, spawnPosition, spawnLocation.rotation);
+                    CapsuleCollider capsuleCollider = enemy.GetComponent<CapsuleCollider>();
+                    capsuleCollider.enabled = true;
 
-                yield return new WaitForSeconds(currentSpawnDelay);
+                    yield return new WaitForSeconds(currentSpawnDelay);
+                }
+                else 
+                {
+                    Debug.LogError("Enemy prefab is null");
+                }
             }
 
-            enemyCount = Mathf.RoundToInt(enemyCount * 0.5f);
+            enemyCount = Mathf.RoundToInt(enemyCount + (enemyCount * 0.5f));
             currentSpawnDelay -= spawnDelayDecreaseFactor;
             waveCount++;
             yield return new WaitForSeconds(waveDuration);
 
         }
+
+        Destroy(gameObject);
         
 
         
